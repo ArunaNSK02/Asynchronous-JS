@@ -63,4 +63,19 @@ function task1(callback) {
       })
     })
   });
+
+  const showMessage = (message) => {
+    console.log(message);
+  }
+
+  const firstMessage = (callback) => {
+    showMessage('Hello');
+    callback();
+  }
+
+  const secondMessage = () => {
+    showMessage('World!');
+  }
+
+  firstMessage(secondMessage);
   
