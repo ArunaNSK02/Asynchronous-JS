@@ -1,81 +1,52 @@
+let displayObj = document.getElementById("response-obj");
 
-function task1(callback) {
-    setTimeout(() => {
-      console.log(1);
-      callback();
-    }, 1000);
+function getDummyJSON(filePath) {
+  const req = new XMLHttpRequest();
+  req.open('GET', filePath);
+  req.onload = () => {
+    if (req.status == 200) {
+      console.log(req.response);
+    } else {
+      console.log("File unable to serve!");
+    }
   }
-  
-  function task2 (callback) {
-    setTimeout(() => {
-      console.log(2);
-     callback();
-    }, 2000);
-  }
-  
-  function task3 (callback) {
-    setTimeout(() => {
-      console.log(3);
-      callback();
-    }, 1500);
-  }
-  
-  function task4 (callback) {
-    setTimeout(() => {
-      console.log(4);
-     callback();
-    }, 3000);
-  }
-  
-  
-  function task5 (callback) {
-    setTimeout(() => {
-      console.log(5);
-      callback();
-    }, 4000);
-  }
-  
-  
-  function task6 (callback) {
-    setTimeout(() => {
-      console.log(6);
-      callback();
-    }, 3500);
-  }
-  
-  
-  function task7 (callback) {
-    setTimeout(() => {
-      console.log(7);
-    }, 500);
-  }
-  
-  task1(() => {
-      task2(() => {
-        task3(() => {
-          task4(() => {
-            task5(() => {
-              task6(() => {
-                task7();
-            })
-          })
-        })
-      })
-    })
-  });
+  req.send();
+}
 
-  const showMessage = (message) => {
-    console.log(message);
-  }
+getDummyJSON('https://dummyjson.com/products/1');
 
-  const firstMessage = (callback) => {
-    showMessage('Hello');
-    callback();
-  }
 
-  const secondMessage = () => {
-    showMessage('World!');
-  }
 
-  firstMessage(secondMessage);
-  
+
+function myDisplayer(some) {
+  displayObj.innerHTML = some;
+}
+
+var retrievedFiles = [];
+
+function getFile(filePath, callBack) {
+  const req = new XMLHttpRequest();
+  req.open('GET', filePath);
+  req.onload = () => {
+      if(req.status == 200) {
+          retrievedFiles.push(req.response);
+          callBack();
+      } else {
+          console.log('Error happened!');
+      }
+  }
+  req.send();
+}
+
+function sendFunction() {
+  if (retrievedFiles.length == 2) {
+      myDisplayer(retrievedFiles[0]);
+      const styleElement = document.createElement("style");
+      styleElement.textContent = retrievedFiles[1];
+      document.head.appendChild(styleElement);
+  } else {
+      getFile("../Learn RWD/ResponsiveImageGrid/style.css", sendFunction);
+  }
+}
+
+getFile("../Learn RWD/ResponsiveImageGrid/index.html", sendFunction);
